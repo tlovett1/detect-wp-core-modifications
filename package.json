@@ -7,7 +7,7 @@
     "detect-wp-core-modifications": "./bin/detect-wp-core-modifications"
   },
   "scripts": {
-    "test": "npm something"
+    "test": "detect-wp-core-modifications path/to/wordpress"
   },
   "author": "",
   "license": "ISC",

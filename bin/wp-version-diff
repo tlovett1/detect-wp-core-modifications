@@ -3,19 +3,20 @@
 WPPATH="$1"
 WPVERSION="$2"
 
-export WPPATH
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 VERSIONREPO="http://core.svn.wordpress.org/tags/$WPVERSION"
-LOCALWPCOPY=$(ls wpcore | grep $WPVERSION)
+LOCALWPCOPY=$(ls "$DIR/../wpcore" | grep $WPVERSION)
+
 if [ -z $LOCALWPCOPY ]; then
-    if [ -n "$(svn info $VERSIONREPO | grep Path:)" ]; then
+    if [ -z "$(svn info $VERSIONREPO | grep Path:)" ]; then
         echo "No repo is found matching the current WordPress version. Is this a development version?" >&2
         exit
     fi
 
-    svn co $VERSIONREPO wpcore/$WPVERSION
+    svn co $VERSIONREPO "$DIR/../wpcore/$WPVERSION" > /dev/null
 fi
 
-diff -qr $WPPATH wpcore/$WPVERSION -x wp-content -x .svn --brief --side-by-side --ignore-space-change \
+diff -qr $WPPATH $DIR/../wpcore/$WPVERSION -x wp-content -x .svn --brief --side-by-side --ignore-space-change \
      --ignore-blank-lines | sed "s/^Only in wpcore\/$WPVERSION\([^:]*\): /D       $WPPATH\1\//" \
      | sed "/^Only in .*/d" | sed 's/^Files \(.*\) and .* differ/M       \1/'

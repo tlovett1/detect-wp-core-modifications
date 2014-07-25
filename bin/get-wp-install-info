@@ -4,7 +4,12 @@ WPPATH="$1"
 
 export WPPATH
 
+if [ ! -f "$WPPATH/wp-includes/version.php" ]; then
+    exit;
+fi
+
 WPVERSION=$(php -r 'include(getenv("WPPATH") . "/wp-includes/version.php"); echo $wp_version;')
+
 echo "Version: $WPVERSION"
 
 # Check if the repo is using SVN
@@ -12,9 +17,9 @@ if [ -n "$(ls -a $WPPATH | grep .svn)" ]; then
     REPOADDRESS=$(svn info $WPPATH | sed -n  -e 's/^URL: //p')
 
     if [ $REPOADDRESS == 'http://core.svn.wordpress.org/trunk' ]; then
-        echo "Install type: trunk"
+        echo -n "Install type: trunk"
         exit;
     fi
 fi
 
-echo "Install type: default"
+echo -n "Install type: default"
