@@ -17,6 +17,8 @@ if [ -z $LOCALWPCOPY ]; then
     svn co $VERSIONREPO "$DIR/../wpcore/$WPVERSION" > /dev/null
 fi
 
-diff -qr $WPPATH $DIR/../wpcore/$WPVERSION -x wp-content -x .svn --brief --side-by-side --ignore-space-change \
-     --ignore-blank-lines | sed "s/^Only in wpcore\/$WPVERSION\([^:]*\): /D       $WPPATH\1\//" \
-     | sed "/^Only in .*/d" | sed 's/^Files \(.*\) and .* differ/M       \1/'
+
+diff -qr $WPPATH $DIR/../wpcore/$WPVERSION -x wp-content -x .svn --brief --side-by-side --ignore-space-change --ignore-blank-lines \
+    | sed "s@^Only in .*wpcore/$WPVERSION/\([^:]*\): @D       $WPPATH/\1\/@" \
+    | sed 's@^Files \(.*\) and .* differ@M       \1@' \
+    | sed "/^Only in .*/d" \
