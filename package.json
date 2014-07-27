@@ -1,6 +1,6 @@
 {
   "name": "detect-wp-core-modifications",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Detect whether core WordPress files have been modified or removed.",
   "main": "./lib/detect-wp-core-modifications",
   "bin": {
